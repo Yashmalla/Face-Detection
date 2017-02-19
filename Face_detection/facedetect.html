@@ -1,0 +1,98 @@
+
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+  <!-- Compiled and minified JavaScript -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+
+  <style>
+  img {
+  	display: block;
+  	margin-left: auto;
+  	margin-right: auto;
+  	max-height: 80%;
+  	max-width: 80%;
+  }
+  option {
+    color: white;
+  }
+  </style>
+  <header><meta charset="UTF-8"></header>
+  
+  <body class="grey darken-3">
+  	<h2 class="lime-text" style="text-align: center;">Face Recognition with R</h2>
+     <div class="row">
+       <div class="col s12 m5" style="padding-left: 250px">
+         <h4 class="orange-text" style="text-align: center;">Test Image</h4>
+         <div class="card-panel teal">
+        	<div class="card-image">
+        		<img id="testImage" class="z-depth-4" src="http://www.rogerbrayrestoration.com/wp-content/uploads/2014/08/Blank-Profile.jpg">
+        	</div>
+		 </div>
+		 <div class="input-field col s12">
+    		<select id="selected">
+      			<option value="" disabled selected>Select an Input Image</option>
+      			<option id ="1" name="1" value="./faces/predict.jpg">Dr. Burris</option>
+      			<option id= "2" name="7" value="./faces/7.jpg">7</option>
+            <option id= "2" name="13" value="./faces/13.png">13</option>
+    		</select>
+  		 </div>
+	   </div>
+
+       <div class="col s12 m5" style="padding-left: 250px">
+         <h4 class="orange-text" style="text-align: center;">Output Image</h4>
+         <div class="card-panel teal">
+            <div class="card-image">
+        		<img id="outputImage" class="z-depth-4" src="http://www.rogerbrayrestoration.com/wp-content/uploads/2014/08/Blank-Profile.jpg">
+        	</div>
+         </div>
+         <div class="row">
+         	<!--This should only appear once the user selects the image and it runs through the algorithm. It's set to hidden now so it should be set to true when the algorithm completes using some JS-->
+
+          <button class="waves-effect waves-light btn" onclick="runScript()">Run</button>
+         	<h5 style="display: none;" class="white-text">You selected input image {}. {} was a <strong>{}% match </strong> for <strong>{} </strong>in the dataset.</h5>
+         </div>
+       </div>
+    </div>
+
+
+
+  </body>
+  
+    
+
+  <script>
+    $(document).ready(function() {
+      $('select').material_select();
+      
+
+    });
+
+    $('select').change(function() {
+    	$("img[id=testImage]").attr("src",$(this).val());
+      
+    });
+
+    function runScript() {
+       var name = $( "select option:selected").attr("name");
+       
+      
+     /* location.href = 'facedetect.php';*/
+     $.ajax({
+
+          type: "POST",
+          url: "facedetect.php",
+
+          data: { names: name},
+
+          success: function(data1) {
+                
+            
+              $("img[id=outputImage]").attr("src",data1);
+            }
+        });
+      
+    }
+
+  </script>
+ 
